@@ -383,7 +383,7 @@
 
     <div class="hero">
       <h1>Daily practise for<br><span class="accent">thinking on your feet.</span></h1>
-      <p>Spin a topic, get five minutes to gather your thoughts, then speak. Low friction, high reps and built for a daily habit practise.</p>
+      <p>Pick a topic, get five minutes to gather your thoughts, then speak. Low friction, high reps and built for a daily habit practise.</p>
       <div class="hero-steps">
         <div class="hero-step"><b>01</b>&nbsp;Get a topic</div>
         <div class="hero-arrow">→</div>
@@ -413,7 +413,7 @@
 
         <div class="topic-card" id="topicCard">
           <div class="topic-card-inner" id="topicCardInner">
-            <div class="topic-placeholder" id="topicPlaceholder">Pull the lever to get your topic</div>
+            <div class="topic-placeholder" id="topicPlaceholder">Press the button to get your topic</div>
           </div>
         </div>
       </div>
@@ -746,7 +746,7 @@
     topicCardInner.innerHTML =
       '<div class="topic-cat-tag">' + t.categoryName + '</div>' +
       '<div class="topic-text">' + escapeHtml(t.text) + '</div>' +
-      (isShuffling ? '' : '<div class="topic-meta">Spun ' + (spins) + ' time' + (spins === 1 ? '' : 's') + '</div>');
+      (isShuffling ? '' : '<div class="topic-meta">Picked ' + (spins) + ' time' + (spins === 1 ? '' : 's') + '</div>');
   }
 
   function escapeHtml(s) {
