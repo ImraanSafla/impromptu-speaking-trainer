@@ -294,8 +294,6 @@
   }
   .spin-btn:hover { transform: translateY(-1px); box-shadow: 0 18px 32px -12px rgba(20,20,27,0.6), inset 0 1px 0 rgba(255,255,255,0.3); }
   .spin-btn:active { transform: scale(0.97); }
-  .spin-hint { font-size: 12px; color: var(--ink-faint); margin-top: 4px; display: none; }
-  .spin-hint.visible { display: block; }
 
   /* PREP / TIMER */
   .prep-zone {
@@ -417,7 +415,6 @@
           <div class="topic-card-inner" id="topicCardInner">
             <div class="topic-placeholder" id="topicPlaceholder">Pull the lever to get your topic</div>
           </div>
-          <div class="spin-hint" id="spinHint">At least one category must stay selected.</div>
         </div>
       </div>
 
@@ -691,12 +688,9 @@
     categoryMeta.textContent = isAllActive() ? "All selected" : selected.length + " selected";
   }
 
-  var spinHint = document.getElementById("spinHint");
-
   categoryToggle.addEventListener("click", function () {
     var open = categoryBody.classList.toggle("open");
     categoryToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    spinHint.classList.toggle("visible", open);
   });
 
   // ---------- SPIN LOGIC ----------
