@@ -217,6 +217,7 @@
   .chip.all-chip { font-weight: 700; }
 
   /* SPINNER */
+  .topic-card-inner { display: contents; }
   .spinner-zone {
     text-align: center;
     padding: 16px 10px 4px;
@@ -293,7 +294,8 @@
   }
   .spin-btn:hover { transform: translateY(-1px); box-shadow: 0 18px 32px -12px rgba(20,20,27,0.6), inset 0 1px 0 rgba(255,255,255,0.3); }
   .spin-btn:active { transform: scale(0.97); }
-  .spin-hint { font-size: 12px; color: var(--ink-faint); margin: 10px 0 18px; }
+  .spin-hint { font-size: 12px; color: var(--ink-faint); margin-top: 4px; display: none; }
+  .spin-hint.visible { display: block; }
 
   /* PREP / TIMER */
   .prep-zone {
@@ -389,7 +391,7 @@
         <div class="hero-arrow">→</div>
         <div class="hero-step"><b>02</b>&nbsp;Prep 5 min</div>
         <div class="hero-arrow">→</div>
-        <div class="hero-step"><b>03</b>&nbsp;Speak &amp; record</div>
+        <div class="hero-step"><b>03</b>&nbsp;Record &amp; Speak</div>
       </div>
     </div>
 
@@ -410,10 +412,12 @@
         <div class="spin-row">
           <button class="spin-btn" id="spinBtn">Select a new topic</button>
         </div>
-        <div class="spin-hint">At least one category must stay selected.</div>
 
         <div class="topic-card" id="topicCard">
-          <div class="topic-placeholder" id="topicPlaceholder">Pull the lever to get your topic</div>
+          <div class="topic-card-inner" id="topicCardInner">
+            <div class="topic-placeholder" id="topicPlaceholder">Pull the lever to get your topic</div>
+          </div>
+          <div class="spin-hint" id="spinHint">At least one category must stay selected.</div>
         </div>
       </div>
 
@@ -687,9 +691,12 @@
     categoryMeta.textContent = isAllActive() ? "All selected" : selected.length + " selected";
   }
 
+  var spinHint = document.getElementById("spinHint");
+
   categoryToggle.addEventListener("click", function () {
     var open = categoryBody.classList.toggle("open");
     categoryToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    spinHint.classList.toggle("visible", open);
   });
 
   // ---------- SPIN LOGIC ----------
@@ -712,6 +719,7 @@
   }
 
   var topicCard = document.getElementById("topicCard");
+  var topicCardInner = document.getElementById("topicCardInner");
   var spinBtn = document.getElementById("spinBtn");
 
   spinBtn.addEventListener("click", function () {
@@ -741,7 +749,7 @@
 
   function renderTopicCard(t, isShuffling) {
     var spins = state.spins[t.id] || 0;
-    topicCard.innerHTML =
+    topicCardInner.innerHTML =
       '<div class="topic-cat-tag">' + t.categoryName + '</div>' +
       '<div class="topic-text">' + escapeHtml(t.text) + '</div>' +
       (isShuffling ? '' : '<div class="topic-meta">Spun ' + (spins) + ' time' + (spins === 1 ? '' : 's') + '</div>');
