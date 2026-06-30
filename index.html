@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impromptu. Daily speaking reps</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg-1: #fdf6e3;
+    --bg-2: #ffd9ec;
+    --bg-3: #cfe0ff;
+    --bg-4: #ffe8c2;
+    --card: #ffffff;
+    --ink: #15151c;
+    --ink-soft: #6b6b76;
+    --ink-faint: #9999a3;
+    --line: #ecebf0;
+    --pill-dark: #14141b;
+    --pill-dark-hover: #2a2a33;
+    --accent: #7c6cf0;
+    --good: #2e9e6b;
+    --warn: #d4622a;
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --shadow-card: 0 20px 60px -20px rgba(20,20,30,0.18);
+    --shadow-soft: 0 8px 24px -10px rgba(20,20,30,0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: #f3f1ee;
+  }
+
+  .page-bg {
+    position: relative;
+    min-height: 100vh;
+    padding: 20px 16px 60px;
+    background:
+      radial-gradient(900px 500px at 8% -5%, rgba(255,217,236,0.85), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, rgba(207,224,255,0.85), transparent 55%),
+      radial-gradient(700px 500px at 50% 110%, rgba(255,232,194,0.9), transparent 60%),
+      radial-gradient(700px 500px at -5% 100%, rgba(255,180,160,0.6), transparent 55%),
+      #fdf9f2;
+  }
+
+  .shell {
+    max-width: 880px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    overflow: hidden;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+  .brand-dot {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: conic-gradient(from 180deg, #7c6cf0, #ff9bd2, #ffd07a, #7c6cf0);
+    box-shadow: inset 0 0 0 3px #fff;
+  }
+  /* HERO */
+  .hero { text-align: center; padding: 38px 24px 8px; }
+  .hero h1 {
+    font-size: 42px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    font-weight: 800;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero p {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    max-width: 480px;
+    margin: 0 auto 22px;
+    line-height: 1.5;
+  }
+  .hero-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+  .hero-step {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 600; color: var(--ink-soft);
+    box-shadow: var(--shadow-soft);
+  }
+  .hero-step b { color: var(--ink); font-weight: 700; }
+  .hero-arrow { color: var(--ink-faint); font-size: 13px; }
+
+  /* MAIN CARD */
+  .app-card {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    margin: 18px 16px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.6);
+    padding: 26px 26px 28px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+
+  /* ACCORDION */
+  .accordion { margin-bottom: 18px; }
+  .accordion-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-radius: 16px;
+    padding: 13px 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px -8px rgba(20,20,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+    transition: background .15s ease;
+  }
+  .accordion-header:hover { background: rgba(255,255,255,0.7); }
+  .accordion-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .accordion-meta {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-left: auto;
+  }
+  .chevron {
+    width: 7px; height: 7px;
+    border-right: 2px solid var(--ink-soft);
+    border-bottom: 2px solid var(--ink-soft);
+    transform: rotate(45deg);
+    transition: transform .2s ease;
+    flex-shrink: 0;
+  }
+  .accordion-header[aria-expanded="true"] .chevron { transform: rotate(-135deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .25s ease, opacity .2s ease, margin-top .25s ease;
+  }
+  .accordion-body.open {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+
+  /* CATEGORY CHIPS */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+    transition: all .12s ease;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: #cfcdd8; }
+  .chip.active {
+    background: rgba(124,122,138,0.16);
+    border-color: rgba(124,122,138,0.4);
+    color: var(--ink);
+  }
+  .chip.all-chip { font-weight: 700; }
+
+  /* SPINNER */
+  .spinner-zone {
+    text-align: center;
+    padding: 16px 10px 4px;
+    border-top: 1px dashed var(--line);
+  }
+  .topic-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(245,243,251,0.4));
+    border: 1px solid rgba(20,20,30,0.16);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-radius: 22px;
+    padding: 48px 30px;
+    margin-bottom: 18px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    transition: transform .12s ease;
+  }
+  .topic-card.spinning { animation: shake .08s linear infinite; }
+  @keyframes shake {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+    100% { transform: translateY(0); }
+  }
+  .topic-cat-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    background: rgba(124,108,240,0.12);
+    border: 1px solid rgba(124,108,240,0.2);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .topic-text {
+    font-size: 38px;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    max-width: 600px;
+    color: var(--ink);
+  }
+  .topic-placeholder { color: var(--ink-faint); font-weight: 600; font-size: 18px; }
+  .topic-meta {
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .spin-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .spin-btn {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(48,48,58,0.92), rgba(14,14,19,0.94));
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    padding: 17px 34px;
+    border-radius: 999px;
+    font-size: 15.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 28px -12px rgba(20,20,27,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+    transition: transform .1s ease, box-shadow .15s ease;
+  }
+  .spin-btn:hover { transform: translateY(-1px); box-shadow: 0 18px 32px -12px rgba(20,20,27,0.6), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .spin-btn:active { transform: scale(0.97); }
+  .spin-hint { font-size: 12px; color: var(--ink-faint); margin: 10px 0 18px; }
+
+  /* PREP / TIMER */
+  .prep-zone {
+    margin-top: 22px;
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    display: none;
+  }
+  .prep-zone.visible { display: block; }
+  .prep-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .timer-display {
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .timer-display.low { color: var(--warn); }
+  .timer-display.done { color: var(--good); }
+  .timer-controls { display: flex; gap: 8px; }
+  .timer-controls button {
+    border: 1px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .timer-controls button.primary {
+    background: linear-gradient(180deg, rgba(48,48,58,0.92), rgba(14,14,19,0.94));
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .timer-bar-track {
+    height: 8px;
+    background: rgba(20,20,30,0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7c6cf0, #ff9bd2);
+    border-radius: 999px;
+    width: 100%;
+    transition: width 1s linear;
+  }
+  .scratchpad {
+    width: 100%;
+    min-height: 90px;
+    border: 1px solid rgba(20,20,30,0.16);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    color: var(--ink);
+    background: rgba(255,255,255,0.45);
+  }
+  .scratchpad::placeholder { color: var(--ink-faint); }
+
+  @media (max-width: 620px) {
+    .hero h1 { font-size: 30px; }
+    .topic-text { font-size: 27px; }
+    .timer-display { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="shell">
+
+    <div class="nav">
+      <div class="brand"><span class="brand-dot"></span>Impromptu</div>
+    </div>
+
+    <div class="hero">
+      <h1>Daily practise for<br><span class="accent">thinking on your feet.</span></h1>
+      <p>Spin a topic, get five minutes to gather your thoughts, then speak. Low friction, high reps and built for a daily habit practise.</p>
+      <div class="hero-steps">
+        <div class="hero-step"><b>01</b>&nbsp;Get a topic</div>
+        <div class="hero-arrow">→</div>
+        <div class="hero-step"><b>02</b>&nbsp;Prep 5 min</div>
+        <div class="hero-arrow">→</div>
+        <div class="hero-step"><b>03</b>&nbsp;Speak &amp; record</div>
+      </div>
+    </div>
+
+    <div class="app-card">
+
+      <div class="accordion">
+        <button class="accordion-header" id="categoryToggle" aria-expanded="false">
+          <span class="accordion-title">Categories</span>
+          <span class="accordion-meta" id="categoryMeta">All selected</span>
+          <span class="chevron" id="categoryChevron"></span>
+        </button>
+        <div class="accordion-body" id="categoryBody">
+          <div class="chips" id="chipRow"></div>
+        </div>
+      </div>
+
+      <div class="spinner-zone">
+        <div class="spin-row">
+          <button class="spin-btn" id="spinBtn">Select a new topic</button>
+        </div>
+        <div class="spin-hint">At least one category must stay selected.</div>
+
+        <div class="topic-card" id="topicCard">
+          <div class="topic-placeholder" id="topicPlaceholder">Pull the lever to get your topic</div>
+        </div>
+      </div>
+
+      <div class="prep-zone" id="prepZone">
+        <div class="prep-head">
+          <div class="timer-display" id="timerDisplay">5:00</div>
+          <div class="timer-controls">
+            <button id="startBtn" class="primary">Start prep</button>
+            <button id="resetBtn">Reset</button>
+          </div>
+        </div>
+        <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar"></div></div>
+        <div class="section-label">Scratchpad (optional)</div>
+        <textarea class="scratchpad" id="scratchpad" placeholder="Jot a few angles, an opening line, or a structure. Three points and an example works well."></textarea>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- CONFIG ----------
+  var PREP_SECONDS = 300; // 5 minute prep window. Tune here
+
+  // ---------- TOPIC BANK ----------
+  var CATEGORIES = [
+    { id: "comfort", emoji: "🛋️", name: "Comfort", topics: [
+      "The most underrated comfort food", "Your ideal lazy Sunday, defended", "The best seat in your house",
+      "A blanket you'd never give up", "Why naps are underrated", "The perfect cup of tea, defended",
+      "Hot bath or hot shower?", "The smell that means “home”", "Why mess is actually comforting",
+      "The most comforting sound in the world", "Sweatpants: a love letter", "The one meal that fixes a bad day"
+    ]},
+    { id: "work", emoji: "💼", name: "Work", topics: [
+      "The worst meeting habit", "Open-plan offices: defend or destroy", "Why “quick call” is a lie",
+      "The best excuse to leave early", "A skill school never taught you", "Why Mondays get a bad rap",
+      "The most useless job title", "Remote work: friend or foe?", "Why everyone secretly loves a snow day",
+      "The four-day week, argued", "A meeting that should've been an email", "The worst piece of career advice"
+    ]},
+    { id: "travel", emoji: "✈️", name: "Travel", topics: [
+      "Roast the middle seat", "The most overrated destination", "Why airports bring out the worst in people",
+      "Window seat or aisle. Defend your pick", "The one thing you always overpack", "A city that disappointed you",
+      "Why jet lag is basically a personality test", "The worst travel companion trait", "Solo travel vs group travel",
+      "A souvenir you regret buying", "The most underrated form of transport", "Why road trips beat flights"
+    ]},
+    { id: "confessions", emoji: "📚", name: "Confessions", topics: [
+      "A small lie I'm glad I told", "The worst gift I ever gave", "A guilty pleasure I won't apologise for",
+      "Something I pretend to understand", "A habit I'll never admit to in person", "The pettiest thing I've ever done",
+      "A song I'm embarrassed to love", "The last thing I lied about", "A rule I break on purpose",
+      "Something I judged someone for, then did myself", "The most useless thing I own", "A childhood fear I never grew out of"
+    ]},
+    { id: "philosophy", emoji: "🧠", name: "Philosophy", topics: [
+      "Is free will an illusion?", "Does everything happen for a reason?", "Can money buy happiness. Really?",
+      "Is honesty always the best policy?", "Are humans naturally good or selfish?", "What makes a life “successful”?",
+      "Is nostalgia a trap?", "Do we control our own personality?", "Is boredom necessary?",
+      "What does it mean to “know thyself”?", "Is privacy a modern luxury?", "Are rules made to be broken?"
+    ]},
+    { id: "hottakes", emoji: "🌶️", name: "Hot takes", topics: [
+      "Cereal is a soup", "Reply-all should be banned", "Birthdays are overrated past 25",
+      "The best music is from your teenage years", "Small talk is underrated", "Sunday is the worst day of the week",
+      "Coffee is overhyped", "New Year's resolutions don't work", "Group chats peak after a year",
+      "The customer isn't always right", "Most podcasts are too long", "Pineapple belongs on pizza"
+    ]},
+    { id: "stocks", emoji: "📈", name: "Stock Market", topics: [
+      "AI stocks. Bubble or breakthrough?", "Is gold still a safe bet?", "Crypto: revolution or roulette?",
+      "The stock everyone's wrong about", "Is day trading just gambling?", "A company you'd bet your savings on",
+      "Are meme stocks dead?", "Index funds vs picking your own", "The most overhyped IPO",
+      "Will interest rates ever feel normal again?", "A stock you regret not buying", "Is the housing market a bubble?"
+    ]},
+    { id: "roast", emoji: "🔥", name: "Roast A Popular Thing", topics: [
+      "Roast the Marvel Cinematic Universe", "Roast influencer culture", "Roast the 9-to-5",
+      "Roast modern dating apps", "Roast self-help books", "Roast true crime podcasts",
+      "Roast the gym selfie", "Roast wellness culture", "Roast LinkedIn posts",
+      "Roast reality TV", "Roast the airport lounge crowd", "Roast oat milk lattes"
+    ]},
+    { id: "pitch", emoji: "🎤", name: "One-Minute Pitch", topics: [
+      "Pitch a fidget spinner to investors", "Sell me this water bottle", "Pitch a holiday nobody's heard of",
+      "Convince me to learn an instrument", "Pitch your dream business in 60 seconds", "Sell a rainy Tuesday as a good day",
+      "Pitch a reality show about your job", "Convince me to try cold showers", "Sell me a gym membership I don't need",
+      "Pitch a podcast idea, badly", "Convince me your hometown is underrated", "Pitch the worst superhero power as a gift"
+    ]},
+    { id: "defend", emoji: "🛡️", name: "Defend The Worst Take", topics: [
+      "Defend: mornings are better than evenings", "Defend: socks with sandals are fine", "Defend: silent movies beat talkies",
+      "Defend: handwriting is dying for a good reason", "Defend: the book is NOT always better", "Defend: working weekends sometimes makes sense",
+      "Defend: vanilla is the best ice cream flavour", "Defend: flying economy is underrated", "Defend: cold pizza beats hot pizza",
+      "Defend: doing nothing is productive", "Defend: losing is sometimes better than winning", "Defend: rules without exceptions are good"
+    ]},
+    { id: "eli5", emoji: "👧", name: "Explain It Like You're 5", topics: [
+      "Explain why the sky is blue", "Explain how the internet works", "Explain inflation",
+      "Explain why we dream", "Explain how a plane stays up", "Explain why ice floats",
+      "Explain interest rates", "Explain why we get hiccups", "Explain how Wi-Fi works",
+      "Explain why time zones exist", "Explain why the moon changes shape", "Explain how money is made"
+    ]},
+    { id: "conspiracy", emoji: "🕵️", name: "Conspiracy Corner", topics: [
+      "Birds aren't real. Defend it", "We never went back to the moon, why?", "Your phone is always listening. Discuss",
+      "The “five second rule” is a conspiracy", "Mercury retrograde actually does something", "Big Tech wants you addicted, on purpose",
+      "Some products are designed to break", "The “lost sock” dimension is real", "Coincidences are never really coincidences",
+      "Your search history shapes you", "Adverts know what you're thinking before you do", "“Everything happens for a reason” is the real conspiracy"
+    ]},
+    { id: "millennial", emoji: "☕", name: "Millennial", topics: [
+      "Side parts and skinny jeans, defended", "Why millennials love avocado toast so much", "The “adulting” struggle, explained",
+      "Why everyone's burnt out by 30", "Buzzfeed quizzes were peak culture", "The “treat yourself” mentality, defended",
+      "Why millennials still text in paragraphs", "Harry Potter house pride, explained", "The student loan struggle",
+      "Why “doing it for the plot” matters", "Nostalgia for dial-up internet", "The “main character energy” era"
+    ]},
+    { id: "genz", emoji: "📱", name: "Gen Z", topics: [
+      "Skibidi, explained to a confused adult", "Why everything is “lowkey” or “highkey”", "TikTok brain rot. Real or overblown?",
+      "The “no thoughts, just vibes” mindset", "Why nobody answers phone calls anymore", "Texting in lowercase only, defended",
+      "The four-day work week, demanded", "“It's giving”. Explain the phrase", "Why everyone has a side hustle now",
+      "Quiet quitting, explained", "The “delulu is the solulu” mindset", "Why Gen Z hates small talk on calls"
+    ]}
+  ];
+
+  var GENERAL_TOPICS = [
+    "One food I can eat forever and not get bored of",
+    "AI taking jobs. Your take",
+    "Latest movie or series. Worth the hype?",
+    "The most overrated holiday",
+    "A trend you don't understand",
+    "The best invention of the last decade",
+    "Something everyone gets wrong about you",
+    "The most underrated app on your phone"
+  ];
+
+  // Flatten into topic objects { id, text, categoryId, categoryName }
+  var ALL_TOPICS = [];
+  CATEGORIES.forEach(function (cat) {
+    cat.topics.forEach(function (text, i) {
+      ALL_TOPICS.push({
+        id: cat.id + "-" + i,
+        text: text,
+        categoryId: cat.id,
+        categoryName: cat.name
+      });
+    });
+  });
+  GENERAL_TOPICS.forEach(function (text, i) {
+    ALL_TOPICS.push({
+      id: "general-" + i,
+      text: text,
+      categoryId: "general",
+      categoryName: "General"
+    });
+  });
+
+  // ---------- STORAGE ----------
+  var LS_KEY = "impromptu_state_v1";
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return {
+      spins: {},        // topicId -> count
+      lastSubset: null  // array of category ids, remembered when collapsing from "All"
+    };
+  }
+
+  var state = loadState();
+
+  function saveState() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  // ---------- CATEGORY SELECTION STATE ----------
+  var ALL_IDS = CATEGORIES.map(function (c) { return c.id; });
+  var selected = ALL_IDS.slice(); // default: All active
+
+  function isAllActive() {
+    return selected.length === ALL_IDS.length;
+  }
+
+  function renderChips() {
+    var row = document.getElementById("chipRow");
+    row.innerHTML = "";
+
+    var allChip = document.createElement("div");
+    allChip.className = "chip all-chip" + (isAllActive() ? " active" : "");
+    allChip.textContent = "All";
+    allChip.addEventListener("click", function () {
+      if (isAllActive()) {
+        // collapse to remembered subset, or keep at least one
+        var subset = state.lastSubset && state.lastSubset.length ? state.lastSubset : [ALL_IDS[0]];
+        selected = subset.slice();
+      } else {
+        state.lastSubset = selected.slice();
+        selected = ALL_IDS.slice();
+      }
+      saveState();
+      renderChips();
+    });
+    row.appendChild(allChip);
+
+    CATEGORIES.forEach(function (cat) {
+      var chip = document.createElement("div");
+      var active = selected.indexOf(cat.id) !== -1;
+      chip.className = "chip" + (active ? " active" : "");
+      chip.textContent = cat.emoji + " " + cat.name;
+      chip.addEventListener("click", function () {
+        if (isAllActive()) {
+          // start a fresh subset with just this category
+          selected = [cat.id];
+        } else if (active) {
+          if (selected.length > 1) {
+            selected = selected.filter(function (id) { return id !== cat.id; });
+          }
+          // if it's the last one, leave it selected (at least one must stay active)
+        } else {
+          selected.push(cat.id);
+        }
+        saveState();
+        renderChips();
+      });
+      row.appendChild(chip);
+    });
+
+    updateCategoryMeta();
+  }
+
+  // ---------- ACCORDION ----------
+  var categoryToggle = document.getElementById("categoryToggle");
+  var categoryBody = document.getElementById("categoryBody");
+  var categoryMeta = document.getElementById("categoryMeta");
+
+  function updateCategoryMeta() {
+    categoryMeta.textContent = isAllActive() ? "All selected" : selected.length + " selected";
+  }
+
+  categoryToggle.addEventListener("click", function () {
+    var open = categoryBody.classList.toggle("open");
+    categoryToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  // ---------- SPIN LOGIC ----------
+  // Two-step pick: (1) a random category from whatever's selected. The more
+  // categories active, the wider the spread. Then (2) a flat, uniform random
+  // pick of a topic within that category.
+  var currentTopic = null;
+
+  function getBuckets() {
+    var buckets = selected.slice();
+    if (isAllActive()) buckets.push("general"); // unlock the outside-category pool only when All is active
+    return buckets;
+  }
+
+  function pickTopic() {
+    var buckets = getBuckets();
+    var catId = buckets[Math.floor(Math.random() * buckets.length)];
+    var catPool = ALL_TOPICS.filter(function (t) { return t.categoryId === catId; });
+    return catPool[Math.floor(Math.random() * catPool.length)];
+  }
+
+  var topicCard = document.getElementById("topicCard");
+  var spinBtn = document.getElementById("spinBtn");
+
+  spinBtn.addEventListener("click", function () {
+    if (selected.length === 0) return;
+    spinBtn.disabled = true;
+    topicCard.classList.add("spinning");
+
+    var ticks = 0;
+    var maxTicks = 9;
+    var interval = setInterval(function () {
+      var t = pickTopic();
+      renderTopicCard(t, true);
+      ticks++;
+      if (ticks >= maxTicks) {
+        clearInterval(interval);
+        var final = pickTopic();
+        currentTopic = final;
+        state.spins[final.id] = (state.spins[final.id] || 0) + 1;
+        saveState();
+        renderTopicCard(final, false);
+        topicCard.classList.remove("spinning");
+        spinBtn.disabled = false;
+        showPrepZone();
+      }
+    }, 70);
+  });
+
+  function renderTopicCard(t, isShuffling) {
+    var spins = state.spins[t.id] || 0;
+    topicCard.innerHTML =
+      '<div class="topic-cat-tag">' + t.categoryName + '</div>' +
+      '<div class="topic-text">' + escapeHtml(t.text) + '</div>' +
+      (isShuffling ? '' : '<div class="topic-meta">Spun ' + (spins) + ' time' + (spins === 1 ? '' : 's') + '</div>');
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  // ---------- PREP TIMER ----------
+  var prepZone = document.getElementById("prepZone");
+  var timerDisplay = document.getElementById("timerDisplay");
+  var timerBar = document.getElementById("timerBar");
+  var startBtn = document.getElementById("startBtn");
+  var resetBtn = document.getElementById("resetBtn");
+  var scratchpad = document.getElementById("scratchpad");
+
+  var remaining = PREP_SECONDS;
+  var tickHandle = null;
+  var running = false;
+
+  function showPrepZone() {
+    prepZone.classList.add("visible");
+    resetTimer();
+    scratchpad.value = "";
+  }
+
+  function formatTime(s) {
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ":" + String(sec).padStart(2, "0");
+  }
+
+  // Short ascending chime, synthesised with the Web Audio API so no audio file is needed.
+  function playChime() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = new Ctx();
+      var notes = [659.25, 783.99, 987.77]; // E5, G5, B5
+      notes.forEach(function (freq, i) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var startTime = ctx.currentTime + i * 0.16;
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.6);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.65);
+      });
+    } catch (e) {}
+  }
+
+  function updateTimerUI() {
+    timerDisplay.textContent = formatTime(remaining);
+    timerBar.style.width = (100 * remaining / PREP_SECONDS) + "%";
+    timerDisplay.classList.toggle("low", remaining <= 30 && remaining > 0);
+    timerDisplay.classList.toggle("done", remaining === 0);
+  }
+
+  function resetTimer() {
+    clearInterval(tickHandle);
+    running = false;
+    remaining = PREP_SECONDS;
+    startBtn.textContent = "Start prep";
+    startBtn.disabled = false;
+    updateTimerUI();
+  }
+
+  function startTimer() {
+    if (running) {
+      // pause
+      clearInterval(tickHandle);
+      running = false;
+      startBtn.textContent = "Resume";
+      return;
+    }
+    running = true;
+    startBtn.textContent = "Pause";
+    tickHandle = setInterval(function () {
+      remaining--;
+      if (remaining <= 0) {
+        remaining = 0;
+        updateTimerUI();
+        clearInterval(tickHandle);
+        running = false;
+        startBtn.textContent = "Time's up";
+        startBtn.disabled = true;
+        playChime();
+        return;
+      }
+      updateTimerUI();
+    }, 1000);
+    updateTimerUI();
+  }
+
+  startBtn.addEventListener("click", startTimer);
+  resetBtn.addEventListener("click", function () {
+    startBtn.disabled = false;
+    resetTimer();
+  });
+
+  // ---------- INIT ----------
+  renderChips();
+  updateTimerUI();
+})();
+</script>
+</body>
+</html>
